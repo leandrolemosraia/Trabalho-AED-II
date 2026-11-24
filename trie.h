@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include <dirent.h> //biblioteca para ler a pasta toda dos documentos facilitado
 
 typedef struct NoTrie {
     struct NoTrie *filhos[26];
@@ -12,4 +13,7 @@ typedef struct NoTrie {
 NoTrie* criarNoTrie();
 void inserirPalavra(NoTrie* raiz, const char* palavra);
 NoTrie* buscarPrefixo(NoTrie* raiz, const char* prefixo);
+void liberartrie(NoTrie *no);
 void sugerirAutocomplete(NoTrie* noPrefixo, char* buffer, int nivel, int* contador);
+
+
