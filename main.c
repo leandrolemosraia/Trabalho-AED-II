@@ -5,27 +5,40 @@
 
 int main() {
     NoTrie *raiz = criarNoTrie();
-    
-    carregarPasta(raiz, "documentos");
+    int contadorMenu = 0;
+    //Aqui coloque o destino que vai estar a pasta 'Cars'
+    carregarPasta(raiz, "C:/Users/1645091/Documents/Trabalho-AED-II-main/Cars");
 
-    char prefixo;
-    printf("Digite o prefixo para pesquisa: ");
-    scanf("%99s", prefixo);
+    char prefixo[100];
 
-    for (int i = 0; prefixo[i]; i++) {
-        prefixo[i] = tolower((unsigned char)prefixo[i]);
-    }
+    printf("\n====================================\n");
+    printf("\n||       Opnioes de Carros        ||\n");
+    printf("\n====================================\n");
 
-    NoTrie *no = buscarPrefixo(raiz, prefixo);
-    if (no != NULL) {
-        char buffer;
-        strcpy(buffer, prefixo);
-        int contador = 0;
-        sugerirAutocomplete(no, buffer, strlen(prefixo), &contador);
-    } else {
-        printf("Nenhum termo encontrado.\n");
-    }
+    do
+    {
+        printf("\n\n\n||DIGITE 1 PARA SAIR||\nDigite o prefixo para pesquisa: ");
+        scanf("%99s", prefixo);
 
-    liberartrie(raiz);
-    return 0;
+        for (int i = 0; prefixo[i]; i++) {
+            prefixo[i] = tolower((unsigned char)prefixo[i]);
+        }
+
+        NoTrie *no = buscarPrefixo(raiz, prefixo);
+        if (no != NULL) {
+            char buffer[100];
+            strcpy(buffer, prefixo);
+            int contador = 0;
+            sugerirAutocomplete(no, buffer, strlen(prefixo), &contador);
+        }
+        else
+        {
+            printf("Nenhum termo encontrado.\n");
+            if(strcmp(prefixo, "1") == 0){
+                liberarTrie(raiz);
+                printf("\nSAINDO...\n");
+                return 0;
+            }
+        }
+    }while(contadorMenu != 1);
 }

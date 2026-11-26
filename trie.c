@@ -1,7 +1,8 @@
-
 #include "trie.h"
 #include <string.h>
 #include <ctype.h>
+
+int palavrasInseridas = -1;
 
 NoTrie* criarNoTrie() {
     NoTrie *no = (NoTrie *)malloc(sizeof(NoTrie));
@@ -29,6 +30,8 @@ void inserirPalavra(NoTrie* raiz, const char* palavra) {
         atual = atual->filhos[indice];
     }
     if (atual != raiz) {
+        palavrasInseridas++;
+        printf("\rTOTAL DE CARROS INSERIDOS: %d", palavrasInseridas);
         atual->ehFimDePalavra = 1;
     }
 }
@@ -48,12 +51,12 @@ NoTrie* buscarPrefixo(NoTrie* raiz, const char* prefixo) {
     return atual;
 }
 
-void liberartrie(NoTrie *no) {
+void liberarTrie(NoTrie *no) {
     if (no == NULL) {
         return;
     }
     for (int i = 0; i < 26; i++) {
-        liberartrie(no->filhos[i]);
+        liberarTrie(no->filhos[i]);
     }
     free(no);
 }
@@ -63,7 +66,7 @@ void sugerirAutocomplete(NoTrie* noPrefixo, char* buffer, int nivel, int* contad
 
     if (noPrefixo->ehFimDePalavra) {
         buffer[nivel] = '\0';
-        printf("- %s\n", buffer);
+        printf(">> %s\n", buffer);
         if (contador != NULL) (*contador)++;
     }
 
@@ -95,11 +98,11 @@ void processarArquivo(NoTrie *raiz, const char *caminhoArquivo) {
         char *palavra = strtok(linha, delimitadores);
         while (palavra != NULL) {
             paraMinusculo(palavra);
-            
+
             if (strlen(palavra) > 1) {
                 inserirPalavra(raiz, palavra);
             }
-            
+
             palavra = strtok(NULL, delimitadores);
         }
     }
